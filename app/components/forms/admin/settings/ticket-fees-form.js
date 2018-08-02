@@ -6,10 +6,6 @@ import { orderBy, filter } from 'lodash';
 
 export default Component.extend({
 
-  selectedCurrency: computed(function(currName) {
-    return orderBy(filter(countries, country => paymentCurrencies.includes(curr.name)), currName);
-  }),
-
   paymentCountries: computed(function() {
     return orderBy(filter(countries, country => paymentCountries.includes(country.code)), 'name');
   }),
@@ -26,8 +22,17 @@ export default Component.extend({
       }));
     },
     deleteTicket(rec) {
-      rec.deleteRecord();
-      this.get('model').toArray().removeObject(rec);
+      this.set('isLoading', true);
+      rec.destroyRecord()
+        .then(() => {
+          this.get('notify').success(this.get('l10n').t('Ticket deleted successfully'));
+        })
+        .catch(() => {
+          this.get('notify').error(this.get('l10n').t('Oops something went wrong. Please try again'));
+        })
+        .finally(() => {
+          this.set('isLoading', false);
+        });
     }
   }
 });
