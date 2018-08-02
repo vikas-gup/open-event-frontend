@@ -6,9 +6,9 @@ import { orderBy, filter } from 'lodash';
 
 export default Component.extend({
 
-  didInsertElement() {
-    this.get('model').toArray().addObject(this.store.createRecord('ticket-fee'));
-  },
+  selectedCurrency: computed(function(currName) {
+    return orderBy(filter(countries, country => paymentCurrencies.includes(curr.name)), currName);
+  }),
 
   paymentCountries: computed(function() {
     return orderBy(filter(countries, country => paymentCountries.includes(country.code)), 'name');
@@ -20,7 +20,14 @@ export default Component.extend({
 
   actions: {
     addNewTicket() {
-      this.get('model').toArray().addObject(this.store.createRecord('ticket-fee'));
+      this.get('model').toArray().addObject(this.store.createRecord('ticket-fee', {
+        maximumFee: 0.0,
+        serviceFee: 0.0
+      }));
+    },
+    deleteTicket(rec) {
+      rec.deleteRecord();
+      this.get('model').toArray().removeObject(rec);
     }
   }
 });
