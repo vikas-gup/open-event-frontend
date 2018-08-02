@@ -4,7 +4,47 @@
   </h3>
   {{#each model as |ticketFee|}}
     <div class="ui sub header">
-      {{currency-name ticketFee.currency}} - {{ticketFee.currency}} ({{currency-symbol ticketFee.currency}})
+      {{#if ticketFee.id }}
+        {{ticketFee.country}}
+      {{else}}
+        <label class="required">{{t 'Select country'}}</label>
+        {{#ui-dropdown class='search selection' selected=ticketFee.country forceSelection=false
+                       fullTextSearch=true}}
+          {{input type='hidden' id='ticket_country' value=ticketFee.country}}
+          <i class="dropdown icon"></i>
+          <div class="default text">{{t 'Select country'}}</div>
+          <div class="menu">
+            {{#each paymentCountries as |paymentCountry|}}
+              <div class="item" data-value="{{paymentCountry.name}}">
+                <i class="{{lowercase paymentCountry.code}} flag"></i>
+                {{paymentCountry.name}}
+              </div>
+            {{/each}}
+          </div>
+        {{/ui-dropdown}}
+      {{/if}}
+    </div>
+    <div class="ui sub header">
+      {{#if ticketFee.id }}
+        {{currency-name ticketFee.currency}} - {{ticketFee.currency}} ({{currency-symbol ticketFee.currency}})
+      {{else}}
+        <label class="required">{{t 'Select currency'}}</label>
+        {{#ui-dropdown class='search selection' selected=ticketFee.currency forceSelection=false
+                       fullTextSearch=true}}
+          {{input type='hidden' id='payment_currency' value=ticketFee.currency}}
+          <i class="dropdown icon"></i>
+          <div class="default text">{{t 'Select currency'}}</div>
+          <div class="menu">
+            {{#each paymentCurrencies as |paymentCurrency|}}
+              <div class="item" data-value="{{paymentCurrency.code}}">
+                {{paymentCurrency.code}} -
+                {{paymentCurrency.name}}
+                ({{paymentCurrency.symbol}})
+              </div>
+            {{/each}}
+          </div>
+        {{/ui-dropdown}}
+      {{/if}}
     </div>
     <div class="field">
       <div class="label">
@@ -23,7 +63,9 @@
       </div>
       <div class="ui right labeled input">
         <div class="ui label">
-          {{currency-symbol ticketFee.currency}}
+          {{#if ticketFee.currency}}
+            {{currency-symbol ticketFee.currency}}
+          {{/if}}
         </div>
         {{input type='number' name=(concat ticketFee.currency '_maximum') value=ticketFee.maximumFee step=0.1 min=0}}
         <div class="ui basic label">
@@ -35,6 +77,11 @@
     </div>
     <div class="ui hidden divider"></div>
   {{/each}}
+
+  <button type="button" class="ui teal button" {{action 'addNewTicket'}}>
+    {{t 'Add New'}}
+  </button>
+
   <button class="ui teal button" type="submit">
     {{t 'Save'}}
   </button>
