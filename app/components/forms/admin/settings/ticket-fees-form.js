@@ -16,10 +16,22 @@ export default Component.extend({
 
   actions: {
     addNewTicket() {
-      this.get('model').toArray().addObject(this.store.createRecord('ticket-fee', {
-        maximumFee: 0.0,
-        serviceFee: 0.0
-      }));
+      let settings = this.get('model');
+      let incorrect_settings = settings.filter(function(setting) {
+        return (!setting.get("currency") || !setting.get("country"));
+      })
+      if (incorrect_settings.length > 0)
+      {
+          this.notify.error(this.get('l10n').t('Please fill required fields before adding new.'));
+          this.set('isLoading', false);
+      }
+      else
+      {
+        this.get('model').toArray().addObject(this.store.createRecord('ticket-fee', {
+          maximumFee: 0.0,
+          serviceFee: 0.0
+        }));
+      }
     },
     deleteTicket(rec) {
       this.set('isLoading', true);
