@@ -5,7 +5,6 @@ import { paymentCountries, paymentCurrencies } from 'open-event-frontend/utils/d
 import { orderBy, filter } from 'lodash';
 
 export default Component.extend({
-
   paymentCountries: computed(function() {
     return orderBy(filter(countries, country => paymentCountries.includes(country.code)), 'name');
   }),
@@ -18,18 +17,15 @@ export default Component.extend({
     addNewTicket() {
       let settings = this.get('model');
       let incorrect_settings = settings.filter(function(setting) {
-        return (!setting.get("currency") || !setting.get("country"));
-      })
-      if (incorrect_settings.length > 0)
-      {
-          this.notify.error(this.get('l10n').t('Please fill required fields before adding new.'));
-          this.set('isLoading', false);
-      }
-      else
-      {
+        return (!setting.get('currency') || !setting.get('country'));
+      });
+      if (incorrect_settings.length > 0) {
+        this.notify.error(this.get('l10n').t('Please fill required fields before adding new.'));
+        this.set('isLoading', false);
+      } else {
         this.get('model').toArray().addObject(this.store.createRecord('ticket-fee', {
-          maximumFee: 0.0,
-          serviceFee: 0.0
+          maximumFee : 0.0,
+          serviceFee : 0.0
         }));
       }
     },
