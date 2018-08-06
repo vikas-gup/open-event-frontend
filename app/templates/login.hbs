@@ -30,6 +30,13 @@
             <button type="submit" class="ui fluid large teal submit button register">
               {{t 'Get Started'}}
             </button>
+
+            {{#unless noSocial}}
+              <button type="button" class="ui facebook button" {{action 'auth' 'facebook'}}>
+                <i class="facebook icon"></i>
+                {{t 'Login with Facebook'}}
+              </button>
+            {{/unless}}
           </div>
         </div>
       </div>
