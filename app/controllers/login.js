@@ -7,29 +7,28 @@ export default Controller.extend({
 
   actions: {
     getStarted() {
-        this.set('errorMessage', null);
-        this.set('isLoading', true);
-        let payload = {
-          'email': this.get('email')
-        };
-        this.get('loader')
-          .post('/users/checkEmail', payload)
-          .then((response) => {
-            if (response.result == "False"){
-              this.set('successMessage', this.get('l10n').t('Already registered user with this email.'));
-              this.set('newUser', false);
-              this.set('identification', this.get('email'));
-            }
-            else {
-              this.transitionToRoute('register')
-            }
-          })
-          .catch(reason => {
-            this.set('errorMessage', this.get('l10n').t('An unexpected error occurred.'));
-          })
-          .finally(() => {
-            this.set('isLoading', false);
-          });
+      this.set('errorMessage', null);
+      this.set('isLoading', true);
+      let payload = {
+        'email': this.get('email')
+      };
+      this.get('loader')
+        .post('/users/checkEmail', payload)
+        .then(response => {
+          if (response.result === 'False') {
+            this.set('successMessage', this.get('l10n').t('Already registered user with this email.'));
+            this.set('newUser', false);
+            this.set('identification', this.get('email'));
+          } else {
+            this.transitionToRoute('register');
+          }
+        })
+        .catch(() => {
+          this.set('errorMessage', this.get('l10n').t('An unexpected error occurred.'));
+        })
+        .finally(() => {
+          this.set('isLoading', false);
+        });
 
     },
 
@@ -41,7 +40,7 @@ export default Controller.extend({
               .then(async response => {
                 let credentials = {
                   'identification' : response.email,
-                  'password'       : response.facebook_login_hash
+                  'password' : response.facebook_login_hash
                 };
 
                 let authenticator = 'authenticator:jwt';

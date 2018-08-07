@@ -6,7 +6,7 @@ export default Route.extend(UnauthenticatedRouteMixin, {
     return this.get('l10n').t('Login');
   },
 
-  resetController(controller, isExiting, transition) {
+  resetController(controller) {
     controller.set('newUser', true);
   }
 });

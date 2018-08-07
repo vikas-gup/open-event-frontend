@@ -1,6 +1,5 @@
 import Component from '@ember/component';
 import FormMixin from 'open-event-frontend/mixins/form';
-import { inject as service } from '@ember/service';
 
 export default Component.extend(FormMixin, {
 
