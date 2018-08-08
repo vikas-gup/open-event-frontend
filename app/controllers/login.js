@@ -6,6 +6,9 @@ export default Controller.extend({
   torii : service(),
 
   actions: {
+    toggleStarted() {
+      this.set('newUser', true);
+    },
     getStarted() {
       this.set('errorMessage', null);
       this.set('isLoading', true);

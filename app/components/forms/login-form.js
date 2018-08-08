@@ -40,6 +40,9 @@ export default Component.extend(FormMixin, {
   },
 
   actions: {
+    toggleStarted() {
+      this.sendAction();
+    },
     submit() {
       this.onValid(() => {
         let credentials = this.getProperties('identification', 'password'),
