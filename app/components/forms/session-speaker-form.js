@@ -2,6 +2,8 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { groupBy } from 'lodash';
 import FormMixin from 'open-event-frontend/mixins/form';
+import { countries } from 'open-event-frontend/utils/dictionary/demography';
+import { orderBy } from 'lodash';
 import { compulsoryProtocolValidUrlPattern, validTwitterProfileUrlPattern, validFacebookProfileUrlPattern,
   validGithubProfileUrlPattern, validLinkedinProfileUrlPattern } from 'open-event-frontend/utils/validators';
 
@@ -9,6 +11,10 @@ export default Component.extend(FormMixin, {
 
   newSpeakerSelected : false,
   newSessionSelected : false,
+
+  countries: computed(function() {
+    return orderBy(countries, 'name');
+  }),
 
   getValidationRules() {
     return {
@@ -249,15 +255,6 @@ export default Component.extend(FormMixin, {
             {
               type   : 'empty',
               prompt : this.get('l10n').t('Please enter a position')
-            }
-          ]
-        },
-        country: {
-          identifier : 'speaker_country_required',
-          rules      : [
-            {
-              type   : 'empty',
-              prompt : this.get('l10n').t('Please enter a country')
             }
           ]
         },
