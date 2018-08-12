@@ -166,8 +166,8 @@ export default Mixin.create(MutableArray, CustomFormMixin, {
   },
 
   validateEventDate(eventEndsAt, speakerCallStartsAt, speakerCallEndsAt) {
-    if (eventEndsAt && speakerCallStartsAt && eventEndsAt < speakerCallStartsAt) return false;
-    if (eventEndsAt && speakerCallEndsAt && eventEndsAt < speakerCallEndsAt) return false;
+    if (eventEndsAt && speakerCallStartsAt && eventEndsAt < speakerCallStartsAt) { return false }
+    if (eventEndsAt && speakerCallEndsAt && eventEndsAt < speakerCallEndsAt) { return false }
     return true;
   },
 
@@ -175,7 +175,7 @@ export default Mixin.create(MutableArray, CustomFormMixin, {
     saveDraft() {
       this.onValid(() => {
         var isValidDate = true;
-        var eventEndsAt = this.get('data.event').get('endsAt');;
+        var eventEndsAt = this.get('data.event').get('endsAt');
         if (this.get('data.speakersCall')) {
           var speakerCallStartsAt = this.get('data.speakersCall').get('startsAt');
           var speakerCallEndsAt = this.get('data.speakersCall').get('endsAt');
@@ -184,9 +184,8 @@ export default Mixin.create(MutableArray, CustomFormMixin, {
         if (isValidDate) {
           this.set('data.event.state', 'draft');
           this.sendAction('save');
-        }
-        else {
-          this.get('notify').error("Invalid Start or End Date");
+        } else {
+          this.get('notify').error('Invalid Start or End Date');
         }
       });
     },
